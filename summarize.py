@@ -1,5 +1,6 @@
-#!/usr/local/bin/python
-"""Script to collect 5 minute power production data from an Enphase system.
+#!/usr/local/bin/python3
+"""Script to collect and summarize 5 minute power production data 
+from an Enphase Solar PV system.
 """
 import time
 from os.path import dirname, join, realpath
@@ -127,7 +128,7 @@ savefig('output/cum_kwh.png')
 dfcs = dfdp.cumsum().dropna()
 lr = dfcs.iloc[-1]
 ahead = lr[2018] - lr[2017]
-print(f"2018 kWh - 2017 kWh: {ahead:.0f} kWh")
+print('2018 kWh - 2017 kWh: {:.0f} kWh'.format(ahead))
 dfcs.plot()
 xlabel('Day of Year');
 ylabel('Cumulative kWh');
