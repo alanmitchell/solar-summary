@@ -89,12 +89,12 @@ def get_data(use_dst=True):
 
 def save_plot(file_name):
     """Saves the current Matplotlib figure to the file 'file_name'
-    in the PNG format (with a .png extension).  Prior to saving, 
-    executes the tight_layout() command to reduce whitesapce around
-    the plot area of the figure.
+    in the PNG format (with a .png extension) in the 'output subdirectory.  
+    Prior to saving, executes the tight_layout() command to reduce 
+    whitesapce around the plot area of the figure.
     """
     tight_layout()
-    savefig(file_name + '.png')
+    savefig('output/{}.png'.format(file_name))
 
 df = get_data(use_dst=True)
 
@@ -106,13 +106,13 @@ dfdt.index = dfdt.index.astype(str).str[:10]
 dfdt.tail(10).plot.barh(legend=False)
 ylabel('Date')
 xlabel('kWh produced in Day')
-save_plot('output/last10')
+save_plot('last10')
 
 # Plot Last Day present
 df[str(dfd.index[-1].date())].plot(legend=False)
 ylabel('Power Produced Today, Watts')
 xlabel('Time')
-save_plot('output/last_day')
+save_plot('last_day')
 
 dfm = df.resample('1M').sum() / 12000.
 dfm['mo'] = dfm.index.month
@@ -123,7 +123,7 @@ xticks(range(0,13))
 gca().set_xticklabels([''] + MONTH_NAMES)
 ylabel('kWh in Month')
 xlabel('Month')
-save_plot('output/by_month_by_year')
+save_plot('by_month_by_year')
 
 dfd = df.resample('1D').sum() / 12000.
 dfd['day_of_year'] = dfd.index.dayofyear
@@ -134,7 +134,7 @@ dfdp.cumsum().plot()
 ylabel('Cumulative kWh')
 xlabel('Day of Year')
 ylim(0, 2500);
-save_plot('output/cum_kwh')
+save_plot('cum_kwh')
 
 dfcs = dfdp.cumsum().dropna()
 lr = dfcs.iloc[-1]
@@ -143,7 +143,7 @@ print('2018 kWh - 2017 kWh: {:.0f} kWh'.format(ahead))
 dfcs.plot()
 xlabel('Day of Year');
 ylabel('Cumulative kWh');
-save_plot('output/cum_kwh_partial')
+save_plot('cum_kwh_partial')
 
 dfb = df.copy()
 dfb['Hour'] = dfb.index.hour
@@ -152,14 +152,14 @@ dfbp = dfb.pivot_table(values='power', index='Hour', columns='mo', aggfunc='mean
 dfbp.columns = MONTH_NAMES
 dfbp.plot(subplots=True, layout=(4, 3), figsize=(12, 16), sharex=True, sharey=True)
 yticks(range(0, 3000, 500));
-save_plot('output/monthly_profile')
+save_plot('monthly_profile')
 
 clf()
 dfb.groupby('mo').agg('max')['power'].plot(marker='o', linewidth=1, figsize=(10, 7))
 ylabel('Maximum Power Production, Watts')
 xticks(range(0,13))
 gca().set_xticklabels([''] + MONTH_NAMES);
-save_plot('output/max_power')
+save_plot('max_power')
 
 dfd = df.resample('1D').sum() / 12000.
 dfd.columns = ['Daily kWh']
@@ -169,7 +169,7 @@ gca().set_xticklabels(MONTH_NAMES)
 xlabel('')
 ylabel('kWh in Day')
 title('')
-save_plot('output/monthly_box')
+save_plot('monthly_box')
 
 dfd = df.resample('1D').sum() / 12000.
 dfd.columns = ['kWh']
@@ -177,8 +177,20 @@ dfd['day_of_year'] = dfd.index.dayofyear
 dfd.plot.scatter(x='day_of_year', y='kWh', s=4)
 ylabel('kWh in Day')
 xlabel('Day of Year');
-save_plot('output/daily_production')
+save_plot('daily_production')
 
 # Highest Energy Day
-# print(dfd.kWh.idxmax())
-# df['2017-06-15'].plot();
+d = str(dfd.kWh.idxmax())[:10]
+df[d].plot(legend=False)
+title('Day with Most Energy: {}'.format(d))
+xlabel('Time')
+ylabel('Power, Watts');
+save_plot('max_energy_day')
+
+# Highest Power Day
+d = str(df.power.idxmax())[:10]
+df[d].plot(legend=False)
+title('Day with Maximum Peak Power: {}'.format(d))
+xlabel('Time')
+ylabel('Power, Watts')
+save_plot('max_power_day')
