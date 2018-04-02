@@ -155,7 +155,7 @@ yticks(range(0, 3000, 500));
 save_plot('output/monthly_profile')
 
 clf()
-dfb.groupby('mo').agg('max')['power'].plot(marker='o', linewidth=1)
+dfb.groupby('mo').agg('max')['power'].plot(marker='o', linewidth=1, figsize=(10, 7))
 ylabel('Maximum Power Production, Watts')
 xticks(range(0,13))
 gca().set_xticklabels([''] + MONTH_NAMES);
@@ -182,4 +182,3 @@ save_plot('output/daily_production')
 # Highest Energy Day
 # print(dfd.kWh.idxmax())
 # df['2017-06-15'].plot();
-
