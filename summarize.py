@@ -180,17 +180,21 @@ xlabel('Day of Year');
 save_plot('daily_production')
 
 # Highest Energy Day
-d = str(dfd.kWh.idxmax())[:10]
+imax = dfd.kWh.idxmax()
+d = str(imax)[:10]
+max_e = dfd.loc[imax].kWh
 df[d].plot(legend=False)
-title('Day with Most Energy: {}'.format(d))
+title('Day with Most Energy: {}, {:.1f} kWh'.format(d, max_e))
 xlabel('Time')
 ylabel('Power, Watts');
 save_plot('max_energy_day')
 
 # Highest Power Day
-d = str(df.power.idxmax())[:10]
+imax = df.power.idxmax()
+d = str(imax)[:10]
+max_p = df.loc[imax].power
 df[d].plot(legend=False)
-title('Day with Maximum Peak Power: {}'.format(d))
+title('Day with Maximum Peak Power: {}, {:.0f} Watts'.format(d, max_p))
 xlabel('Time')
 ylabel('Power, Watts')
 save_plot('max_power_day')
