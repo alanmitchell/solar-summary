@@ -8,9 +8,12 @@ from datetime import timedelta, datetime
 import pandas as pd
 import numpy as np
 import requests
+import matplotlib
+matplotlib.use('Agg')
 from matplotlib.pyplot import *
 
 import settings
+
 
 # 'style' the plot like fivethirtyeight.com website
 style.use('bmh')
