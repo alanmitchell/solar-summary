@@ -94,7 +94,7 @@ def save_plot(file_name):
     whitesapce around the plot area of the figure.
     """
     tight_layout()
-    savefig('output/{}.png'.format(file_name))
+    savefig(join(APP_PATH, 'output/{}.png'.format(file_name)))
 
 df = get_data(use_dst=True)
 
