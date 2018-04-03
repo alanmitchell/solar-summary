@@ -7,22 +7,28 @@ Save_As: enphase/solar_summary.html
 
 Analysis North has a 2.85 kW-DC photovoltaic solar system installed on their place
 of business in Anchorage, Alaska (Alan Mitchell's house).  The system consists of
-ten 285 Watt SW 285 SolarWorld panels coupled to ten Enphase S280 microinverters.
-The system is a roof-mounted system, tilted at 45 degrees and oriented 8 degrees
+ten 285 Watt SW 285 SolarWorld panels coupled to ten Enphase S280 microinverters
+with 2.8 capacity of kW-AC.
+The system is roof-mounted, tilted at 45 degrees and oriented 8 degrees
 West of South.
 
 The graphs below summarize the performance of the system to date.  These graphs
 are updated every 10 minutes; press F5 to have your browser refresh
 the data.
 
+The code for acquiring the solar data and creating this page is available at 
+[Alan Mitchell's GitHub site](https://github.com/alanmitchell/solar-summary).
+
 ### Recent Production
 
 This shows the daily energy production from the system for the last ten days.  Note that
-the most recent day, shown at top, could be a partial day.
+the most recent day, shown at top, could be a partial day or could be yesterday if no production
+has been reported yet today.  (There are sometimes delays in reporting production at the start 
+of the day.)
 
 ![daily production](images/last10.png?q=1)
 
-Here is a graph of the power production today (or yesterday if no production has occurred
+Here is a graph of the power production today (or yesterday if no production has been reported
 yet today):
 
 ![today's production](images/last_day.png?q=1)
