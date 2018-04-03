@@ -33,6 +33,7 @@ import requests
 import matplotlib
 matplotlib.use('Agg')
 from matplotlib.pyplot import *
+import matplotlib.dates as mdates
 
 import settings
 
@@ -139,7 +140,16 @@ if settings.PLOT:
     save_plot('last10')
 
     # Plot Last Day present
-    df[str(dfd.index[-1].date())].plot(legend=False)
+    cur_day = str(dfd.index[-1].date())
+    prior_day = str(dfd.index[-2].date())
+    df_cur = df[cur_day]
+    df_prior = df[prior_day]
+    df_prior.index += pd.Timedelta(days=1)
+    plot(df_cur.index, df_cur.power, linewidth=2.5, label=cur_day)
+    plot(df_prior.index, df_prior.power, linewidth=1, color='gray', label=prior_day)
+    legend()
+    gca().xaxis.set_major_formatter(mdates.DateFormatter('%H'))
+    gcf().autofmt_xdate()  # rotate and align the tick labels so they look better
     ylabel('Power Produced Today, Watts')
     xlabel('Time')
     save_plot('last_day')
