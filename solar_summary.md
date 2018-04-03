@@ -12,7 +12,7 @@ The system is a roof-mounted system, tilted at 45 degrees and oriented 8 degrees
 West of South.
 
 The graphs below summarize the performance of the system to date.  These graphs
-are updated every 10 minutes; press Ctrl-F5 (Hard Reload) on your browser to refresh
+are updated every 10 minutes; press F5 to have your browser refresh
 the data.
 
 ### Recent Production
@@ -89,4 +89,6 @@ sun rays redirected as they pass through the clouds adjacent to the sun.
 
 ---
 
-Powered by [![Enphase Logo](images/Powered_By_Enphase_Logo.png)](http://enphase.com)
+<p>
+Powered by: <a href="http://enphase.com"><img alt="Enphase Logo" src="images/Powered_By_Enphase_Logo.png" width="200"></a>
+</p>
