@@ -25,10 +25,11 @@ url = 'https://api.enphaseenergy.com/api/v2/systems/{}/'.format(settings.SYSTEM_
 # path to this directory
 APP_PATH = dirname(realpath(__file__))
 
-if settings.COLLECT:
+# Files that track last record loaded and all records.
+FN_LAST_TS = join(APP_PATH, 'last_ts')
+FN_RECORDS = join(APP_PATH, 'records.csv')
 
-    FN_LAST_TS = join(APP_PATH, 'last_ts')
-    FN_RECORDS = join(APP_PATH, 'records.csv')
+if settings.COLLECT:
 
     payload_base = {
         'key': settings.API_KEY,
@@ -74,7 +75,7 @@ def get_data(use_dst=True):
     # If 'use_dst' is True, account for Daylight Savings Time.
     # Drop the 'usecols' parameter to get the 'device_count' column
     # as well.
-    dfd = pd.read_csv('http://analysisnorth.com/enphase/records.csv', usecols=['ts', 'power'])
+    dfd = pd.read_csv(FN_RECORDS, usecols=['ts', 'power'])
     dfd['dts'] = pd.to_datetime(dfd.ts, unit='s')
     dfd.drop(['ts'], axis=1, inplace=True)
     if not use_dst:
