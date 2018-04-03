@@ -50,7 +50,7 @@ if settings.COLLECT:
         res = requests.get(url + 'stats', params=payload).json()
         if 'intervals' not in res:
             break
-        recs = map(lambda r: (r['end_at'], r['devices_reporting'], r['powr']), res['intervals'])
+        recs = list(map(lambda r: (r['end_at'], r['devices_reporting'], r['powr']), res['intervals']))
         if len(recs):
             with open(FN_RECORDS, 'a') as fout:
                 for rec in recs:
