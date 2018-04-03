@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.6
+#!/usr/local/bin/python3.6
 """Script to collect and summarize 5 minute power production data 
 from an Enphase Solar PV system.
 """

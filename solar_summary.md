@@ -12,7 +12,8 @@ The system is a roof-mounted system, tilted at 45 degrees and oriented 8 degrees
 West of South.
 
 The graphs below summarize the performance of the system to date.  These graphs
-are updated every 10 minutes; press F5 on your browser to refresh the data.
+are updated every 10 minutes; press Ctrl-F5 (Hard Reload) on your browser to refresh
+the data.
 
 ### Recent Production
 
