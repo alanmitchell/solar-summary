@@ -86,3 +86,7 @@ solar panels receiving the direct sun, they also receive substantial radiation f
 sun rays redirected as they pass through the clouds adjacent to the sun.
 
 ![day with maximum peak power](images/max_power_day.png?q=1)
+
+---
+
+Powered by [![Enphase Logo](images/Powered_By_Enphase_Logo.png)](http://enphase.com)
