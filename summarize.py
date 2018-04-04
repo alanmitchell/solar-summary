@@ -152,6 +152,7 @@ if settings.PLOT:
     plot(df_prior1.index.time, df_prior1.power, linewidth=1.2, linestyle='--', label=prior_day1)
     plot(df_prior2.index.time, df_prior2.power, linewidth=1.2, linestyle='--', label=prior_day2)
     plot(df_prior3.index.time, df_prior3.power, linewidth=1.2, linestyle='--', label=prior_day3)
+    xticks(pd.date_range('0:00', '22:00', freq='2H').time, range(0, 24, 2))
     legend()
     ylabel('Power Produced Today, Watts')
     xlabel('Time')
