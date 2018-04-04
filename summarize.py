@@ -141,11 +141,17 @@ if settings.PLOT:
     # Plot Last Day present
     clf()
     cur_day = str(dfd.index[-1].date())
-    prior_day = str(dfd.index[-2].date())
+    prior_day1 = str(dfd.index[-2].date())
+    prior_day2 = str(dfd.index[-3].date())
+    prior_day3 = str(dfd.index[-4].date())
     df_cur = df[cur_day]
-    df_prior = df[prior_day]
-    plot(df_cur.index.time, df_cur.power, linewidth=2.5, label=cur_day)
-    plot(df_prior.index.time, df_prior.power, linewidth=1.5, color='gray', label=prior_day)
+    df_prior1 = df[prior_day1]
+    df_prior2 = df[prior_day2]
+    df_prior3 = df[prior_day3]
+    plot(df_cur.index.time, df_cur.power, linewidth=3, label=cur_day)
+    plot(df_prior1.index.time, df_prior1.power, linewidth=1.2, linestyle='--', label=prior_day1)
+    plot(df_prior2.index.time, df_prior2.power, linewidth=1.2, linestyle='--', label=prior_day2)
+    plot(df_prior3.index.time, df_prior3.power, linewidth=1.2, linestyle='--', label=prior_day3)
     legend()
     ylabel('Power Produced Today, Watts')
     xlabel('Time')

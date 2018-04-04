@@ -5,10 +5,10 @@ Save_As: enphase/solar_summary.html
 
 ## Data from Analysis North Solar PV System
 
-Analysis North has a 2.85 kW-DC photovoltaic solar system installed on their place
+Analysis North has a 2.85 kW-DC photovoltaic solar system installed on our place
 of business in Anchorage, Alaska (Alan Mitchell's house).  The system consists of
 ten 285 Watt SW 285 SolarWorld panels coupled to ten Enphase S280 microinverters
-with 2.8 capacity of kW-AC.
+with a total capacity of 2.80 kW-AC.
 The system is roof-mounted, tilted at 45 degrees and oriented 8 degrees
 West of South.
 
@@ -28,8 +28,8 @@ of the day.)
 
 ![daily production](images/last10.png?q=1)
 
-Here is a graph of the power production today (or yesterday if no production has been reported
-yet today):
+Here is a graph of the power production today (thick blue line) and the prior
+three days (thinner dashed lines):
 
 ![today's production](images/last_day.png?q=1)
 
