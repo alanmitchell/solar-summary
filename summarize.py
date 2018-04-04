@@ -155,7 +155,7 @@ if settings.PLOT:
     xticks(pd.date_range('0:00', '22:00', freq='2H').time, range(0, 24, 2))
     legend()
     ylabel('Power Produced Today, Watts')
-    xlabel('Time')
+    xlabel('Hour of Day')
     save_plot('last_day')
 
     # Total Monthly Energy production by month and separate lines
