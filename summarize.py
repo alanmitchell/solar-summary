@@ -77,8 +77,10 @@ if settings.COLLECT:
             start_at = recs[-1][0]
         else:
             # sometimes there will be a 24 hour period without any reports, so advance
-            # the starting time a day and try again.
-            start_at += 24*3600
+            # the starting time a day and try again.  Only do this if it will not advance
+            # beyond the current time.
+            if time.time() > start_at + 24*3600:
+                start_at += 24*3600
 
     open(FN_LAST_TS, 'w').write(str(start_at))
 
