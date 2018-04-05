@@ -5,7 +5,7 @@ Save_As: enphase/solar_summary.html
 
 ## Data from Analysis North Solar PV System
 
-Analysis North has a 2.85 kW-DC photovoltaic solar system installed on our place
+Analysis North has a 2.85 kW-DC grid-connected photovoltaic solar system installed at our place
 of business in Anchorage, Alaska (Alan Mitchell's house).  The system consists of
 ten 285 Watt SW 285 SolarWorld panels coupled to ten Enphase S280 microinverters
 with a total capacity of 2.80 kW-AC.
@@ -93,19 +93,20 @@ sun rays redirected as they pass through the clouds adjacent to the sun.
 
 ![day with maximum peak power](images/max_power_day.png?q=1)
 
-### An Important Number: Normalized kWh per Year
+### An Important Number: Normalized Annual Production
 
 Here is a graph of an important performance number for the system.  If you
 take the production of the system for a year in kWh (AC delivered to the grid) 
 and then divide by 
-the rated capacity of the system in kW (rated DC panel capacity), you have a useful figure of
-merit for the system.  For example, a normalized production of 850 kWh-AC / kW-DC
+the rated capacity of the system in kW (rated DC panel capacity), you have calculated
+normalized annual production for the system.  For example, a normalized production of 850 kWh-AC / kW-DC
 means that each 1 kW of rated capacity in this system produces 850 kWh-AC of electricity
-for the year. For this particular system, this number will vary depending upon 
+for the year. For this particular system, this number will vary due to 
 how sunny the year is, dirt and snow accumulation on the panels,
 and due to general degradation of output over time.  When
 comparing to other systems, the number will vary due to additional factors such 
-location of the system, tilt and orientation, shading, etc.
+location of the system, tilt and orientation, shading, etc.  Normalized
+production in California is quite a bit more than Alaska.
 
 The graph below plots this normalized production on rolling year basis.  The 
 first point shown below is for October 1, 2017 and has a value of about
