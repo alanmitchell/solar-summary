@@ -253,3 +253,9 @@ if settings.PLOT:
     xlabel('Time')
     ylabel('Power, Watts')
     save_plot('max_power_day')
+
+    # Plot rolling sum of AC kWh Produced per DC kW installed
+    (df.resample('1D').sum() / 12000. / settings.SYSTEM_KW).rolling(365).sum().plot(legend=False)
+    xlabel('End of 365 Day Period')
+    ylabel('AC kWh Produced / DC kW installed')
+    save_plot('rolling_yr_kwh')

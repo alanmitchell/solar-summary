@@ -15,6 +15,9 @@ USER_ID = '2e7a67afed9a51220a'
 # See the Enphase API documentation for more details.
 SYSTEM_ID = 1223456
 
+# Rated DC Capacity of the System in kW
+SYSTEM_KW = 2.85
+
 # Set to True to collect new data from the Enphase API each time the
 # script is run.  False otherwise.
 COLLECT = True

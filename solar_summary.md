@@ -93,8 +93,34 @@ sun rays redirected as they pass through the clouds adjacent to the sun.
 
 ![day with maximum peak power](images/max_power_day.png?q=1)
 
+### An Important Number: Normalized kWh per Year
+
+Here is a graph of an important performance number for the system.  If you
+take the production of the system for a year in kWh (AC delivered to the grid) 
+and then divide by 
+the rated capacity of the system in kW (rated DC panel capacity), you have a useful figure of
+merit for the system.  For example, a normalized production of 850 kWh-AC / kW-DC
+means that each 1 kW of rated capacity in this system produces 850 kWh-AC of electricity
+for the year. For this particular system, this number will vary depending upon 
+how sunny the year is, dirt and snow accumulation on the panels,
+and due to general degradation of output over time.  When
+comparing to other systems, the number will vary due to additional factors such 
+location of the system, tilt and orientation, shading, etc.
+
+The graph below plots this normalized production on rolling year basis.  The 
+first point shown below is for October 1, 2017 and has a value of about
+848 kWh / kW.  That means for the 365 days prior to October 1, 2017, the system
+produced 848 kWh for each 1 kW of installed capacity.  Each additional point
+on the line indicates the normalized production for the 365 days preceding the
+date on the horizontal axis.
+
+![rolling normalized production](images/rolling_yr_kwh.png?q=1)
+
 ---
 
 <p>
 Powered by: <a href="http://enphase.com"><img alt="Enphase Logo" src="images/Powered_By_Enphase_Logo.png" width="200"></a>
 </p>
+Solar data is acquired through use of the Enphase API (application programming interface).  
+All data analysis and graphing is custom programming done by Analyis North and is available at 
+[Alan Mitchell's GitHub site](https://github.com/alanmitchell/solar-summary).
