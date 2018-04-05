@@ -3,7 +3,7 @@
 from an Enphase Solar PV system.  The data collection portion of the
 script adds 5 minute power production records to the 'records.csv' file
 in this directory.  The plotting portion of the script creates a number
-of data summary plots that are saved into the 'output' subdirectory.
+of data summary plots that are saved into the 'images' subdirectory.
 
 The script is meant to be run from a Cron job.  It needs a 'settings.py'
 file in the script directory to run, and that file should be patterned after
@@ -117,12 +117,12 @@ def get_data(use_dst=True):
 
 def save_plot(file_name):
     """Saves the current Matplotlib figure to the file 'file_name'
-    in the PNG format (with a .png extension) in the 'output subdirectory.  
+    in the PNG format (with a .png extension) in the 'images' subdirectory.  
     Prior to saving, executes the tight_layout() command to reduce 
     whitesapce around the plot area of the figure.
     """
     tight_layout()
-    savefig(join(APP_PATH, 'output/{}.png'.format(file_name)))
+    savefig(join(APP_PATH, 'images/{}.png'.format(file_name)))
 
 # 'style' the plot like fivethirtyeight.com website
 style.use('bmh')

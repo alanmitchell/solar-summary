@@ -1,8 +1,8 @@
 settings.py
 last_ts
 records.csv
-output/*.png
-!output/Powered_By_Enphase_Logo.png
+images/*.png
+!images/Powered_By_Enphase_Logo.png
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
