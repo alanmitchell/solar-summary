@@ -17,6 +17,10 @@ loading a couple years of historical data; the script won't exceed the per minut
 API limit (10 calls / minute), and you will be done loading data in (total days) / 9
 calls to the script, since one call to the script will load 9 days of data.
 
+(Note that with some additional code, we could reduce the number of API calls per
+script run to 1 instead of 2.  Test for a small number of records returned, like
+3 or less, and then don't call again if so.)
+
 There are some plotting commands (e.g. tick spacing, axis limits) that improve 
 formatting for my particular solar system; you will need to change those 
 (or delete those) for your system.
@@ -140,20 +144,17 @@ if settings.PLOT:
     xlabel('kWh produced in Day')
     save_plot('last10')
 
-    # Plot Last Day present
+    # Plot last few days in data set.
     clf()
-    cur_day = str(dfd.index[-1].date())
-    prior_day1 = str(dfd.index[-2].date())
-    prior_day2 = str(dfd.index[-3].date())
-    prior_day3 = str(dfd.index[-4].date())
-    df_cur = df[cur_day]
-    df_prior1 = df[prior_day1]
-    df_prior2 = df[prior_day2]
-    df_prior3 = df[prior_day3]
-    plot(df_cur.index.time, df_cur.power, linewidth=3, label=cur_day)
-    plot(df_prior1.index.time, df_prior1.power, linewidth=1.2, linestyle='--', label=prior_day1)
-    plot(df_prior2.index.time, df_prior2.power, linewidth=1.2, linestyle='--', label=prior_day2)
-    plot(df_prior3.index.time, df_prior3.power, linewidth=1.2, linestyle='--', label=prior_day3)
+    num_of_days = 5
+    for i in range(num_of_days):
+        dt_str = str(dfd.index[-(i+1)].date())
+        df_1day = df[dt_str]
+        if i==0:
+            plot(df_1day.index.time, df_1day.power, linewidth=3, label=dt_str)
+        else:
+            plot(df_1day.index.time, df_1day.power, linewidth=1.2, linestyle='--', label=dt_str)        
+            
     xticks(pd.date_range('0:00', '22:00', freq='2H').time, range(0, 24, 2))
     legend()
     ylabel('Power Produced Today, Watts')

@@ -29,7 +29,7 @@ of the day.)
 ![daily production](images/last10.png?q=1)
 
 Here is a graph of the power production today (thick blue line) and the prior
-three days (thinner dashed lines):
+few days (thinner dashed lines):
 
 ![today's production](images/last_day.png?q=1)
 
