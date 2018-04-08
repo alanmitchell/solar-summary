@@ -142,6 +142,13 @@ if settings.PLOT:
     dfdt.tail(10).plot.barh(legend=False)
     ylabel('Date')
     xlabel('kWh produced in Day')
+    for i in range(len(dfdt)):
+        kWh = dfdt.iloc[i].kWh 
+        text(kWh*.99, i-.12, 
+            '{:.2f}'.format(kWh), 
+            horizontalalignment='right',
+            weight='bold',
+            color='white')
     save_plot('last10')
 
     # Plot last few days in data set.
