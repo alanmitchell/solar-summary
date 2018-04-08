@@ -255,7 +255,13 @@ if settings.PLOT:
     save_plot('max_power_day')
 
     # Plot rolling sum of AC kWh Produced per DC kW installed
-    (df.resample('1D').sum() / 12000. / settings.SYSTEM_KW).rolling(365).sum().plot(legend=False)
+    dfr = (df.resample('1D').sum() / 12000. / settings.SYSTEM_KW).rolling(365).sum()
+    avg_norm = dfr.mean().power
+    dfr.plot(legend=False)
     xlabel('End of 365 Day Period')
     ylabel('AC kWh Produced / DC kW installed')
+    text(0.07, 0.85, 
+        'Average: {:.0f} kWh-AC / kW-DC installed'.format(avg_norm), 
+        transform=gca().transAxes,
+        color='green')    
     save_plot('rolling_yr_kwh')
