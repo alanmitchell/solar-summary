@@ -137,21 +137,21 @@ if settings.PLOT:
     # kWh bar graph for last ten days' production
     dfd = df.resample('1D').sum()/12000.
     dfd.columns=['kWh']
-    dfdt = dfd.tail(10)
+    dfdt = dfd.tail(14)
     dfdt.index = dfdt.index.astype(str).str[:10]
-    dfdt.tail(10).plot.barh(legend=False)
+    dfdt.plot.barh(legend=False)
     grid(axis='y')
     ylabel('Date')
     xlabel('kWh produced in Day')
     for i in range(len(dfdt)):
         kWh = dfdt.iloc[i].kWh 
         if kWh > dfdt.kWh.max() * 0.08:
-            text(kWh*.99, i-.12, 
+            text(kWh*.99, i-.15, 
                 '{:.2f}'.format(kWh), 
                 horizontalalignment='right',
                 weight='bold',
                 color='white')
-    save_plot('last10')
+    save_plot('last_days')
 
     # Plot last few days in data set.
     clf()
