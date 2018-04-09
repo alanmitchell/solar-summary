@@ -140,6 +140,7 @@ if settings.PLOT:
     dfdt = dfd.tail(10)
     dfdt.index = dfdt.index.astype(str).str[:10]
     dfdt.tail(10).plot.barh(legend=False)
+    grid(axis='y')
     ylabel('Date')
     xlabel('kWh produced in Day')
     for i in range(len(dfdt)):
