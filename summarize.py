@@ -158,7 +158,7 @@ if settings.PLOT:
     cur_day = dfdt.index[-1]
     prev_day = dfdt.index[-2]
     max_day = str(dfdt.kWh.idxmax())
-    min_day = str(dfdt.kWh.idxmin())
+    min_day = str(dfdt[:-1].kWh.idxmin())
 
     max_done = False
     min_done = False
