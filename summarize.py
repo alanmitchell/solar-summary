@@ -145,7 +145,7 @@ if settings.PLOT:
     xlabel('kWh produced in Day')
     for i in range(len(dfdt)):
         kWh = dfdt.iloc[i].kWh 
-        if kWh > dfdt.kWh.max() * 0.08:
+        if kWh > dfdt.kWh.max() * 0.07:
             text(kWh*.99, i-.15, 
                 '{:.2f}'.format(kWh), 
                 horizontalalignment='right',
