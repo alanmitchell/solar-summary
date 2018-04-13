@@ -28,8 +28,9 @@ of the day.)
 
 ![daily production](images/last_days.png?q=1)
 
-Here is a graph of the power production today (thick blue line) and the prior
-few days (thinner dashed lines):
+Here is a graph of the power production today (thick blue line), yesterday (thin red line), 
+and the days with minimum and maximum energy production during the last two weeks
+(thinner dashed lines):
 
 ![today's production](images/last_day.png?q=1)
 

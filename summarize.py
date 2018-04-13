@@ -155,14 +155,49 @@ if settings.PLOT:
 
     # Plot last few days in data set.
     clf()
-    num_of_days = 5
-    for i in range(num_of_days):
-        dt_str = str(dfd.index[-(i+1)].date())
-        df_1day = df[dt_str]
-        if i==0:
-            plot(df_1day.index.time, df_1day.power, linewidth=3, label=dt_str)
+    cur_day = dfdt.index[-1]
+    prev_day = dfdt.index[-2]
+    max_day = str(dfdt.kWh.idxmax())
+    min_day = str(dfdt.kWh.idxmin())
+
+    max_done = False
+    min_done = False
+    if cur_day == max_day:
+        cur_day_lbl = '{} max'.format(cur_day)
+        max_done = True
+    else:
+        cur_day_lbl = cur_day
+
+    if prev_day == max_day:
+        prev_day_lbl = '{} max'.format(prev_day)
+        max_done = True
+    elif cur_day == min_day:
+        prev_day_lbl = '{} min'.format(prev_day)
+        min_done = True
+    else:
+        prev_day_lbl = prev_day
+        
+    plot_days = [
+        (cur_day, cur_day_lbl),
+        (prev_day, prev_day_lbl)
+    ]
+    if not max_done:
+        plot_days.append(
+            (max_day, '{} max'.format(max_day))
+        )
+    if not min_done:
+        plot_days.append(
+            (min_day, '{} min'.format(min_day))
+    )
+    
+    for dt, lbl in plot_days:
+        df_1day = df[dt]
+        if dt==cur_day:
+            plot(df_1day.index.time, df_1day.power, linewidth=3, label=lbl)
+        elif dt==prev_day:
+            plot(df_1day.index.time, df_1day.power, linewidth=1.2, label=lbl)
         else:
-            plot(df_1day.index.time, df_1day.power, linewidth=1.2, linestyle='--', label=dt_str)        
+            plot(df_1day.index.time, df_1day.power, linewidth=1.2, linestyle='--', label=lbl)        
             
     xticks(pd.date_range('0:00', '22:00', freq='2H').time, range(0, 24, 2))
     legend()
