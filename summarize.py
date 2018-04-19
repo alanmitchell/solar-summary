@@ -171,7 +171,7 @@ if settings.PLOT:
     if prev_day == max_day:
         prev_day_lbl = '{} max'.format(prev_day)
         max_done = True
-    elif cur_day == min_day:
+    elif prev_day == min_day:
         prev_day_lbl = '{} min'.format(prev_day)
         min_done = True
     else:
