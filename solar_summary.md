@@ -38,8 +38,8 @@ and the days with minimum and maximum energy production during the last two week
 
 This graph shows the cumulative energy production of the system for the current year
 and for all previous years as separate lines.  For example, a value of 300 kWh on the
-Y-axis for day number 80 means that a total of 300 kWh were produced for the first 80
-days of the year.
+Y-axis for March 20 means that a total of 300 kWh were produced for the days of the year
+prior to March 20.
 
 ![cumulative production](images/cum_kwh.png?q=1)
 
