@@ -218,6 +218,15 @@ if settings.PLOT:
     xlabel('Month')
     save_plot('by_month_by_year')
 
+    # Make a set of tick locations and labels for those plots that
+    # plot against each day of the year.  Mark the start of each month.
+    doy_locs = []
+    doy_lbls = []
+    for m in range(1, 13):
+        dt = datetime(2018, m, 1)
+        doy_locs.append(dt.timetuple().tm_yday)
+        doy_lbls.append(dt.strftime('%b'))
+
     # Cumulative kWh for each year, by Day-of-Year
     dfd = df.resample('1D').sum() / 12000.
     dfd['day_of_year'] = dfd.index.dayofyear
@@ -227,6 +236,8 @@ if settings.PLOT:
     dfdp.cumsum().plot()
     ylabel('Cumulative kWh')
     xlabel('Day of Year')
+    xticks(doy_locs, doy_lbls)
+    xlim(-5, 370)
     ylim(0, 2500);
     save_plot('cum_kwh')
 
@@ -237,7 +248,10 @@ if settings.PLOT:
     print('2018 kWh - 2017 kWh: {:.0f} kWh'.format(ahead))
     dfcs.plot()
     xlabel('Day of Year');
-    ylabel('Cumulative kWh');
+    ylabel('Cumulative kWh')
+    # limit the xticks
+    locs = [l for l in doy_locs if l <= dfcs.index[-1] + 15]
+    xticks(locs, doy_lbls[:len(locs)])
     save_plot('cum_kwh_partial')
 
     # Separate Hourly profile for each month.
@@ -276,6 +290,8 @@ if settings.PLOT:
     dfd.plot.scatter(x='day_of_year', y='kWh', s=4)
     ylabel('kWh in Day')
     xlabel('Day of Year');
+    xticks(doy_locs, doy_lbls)
+    xlim(-5, 370)
     save_plot('daily_production')
 
     # Plot the Highest Energy Day
