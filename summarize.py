@@ -277,7 +277,7 @@ if settings.PLOT:
     dfd = df.resample('1D').sum() / 12000.
     dfd.columns = ['Daily kWh']
     dfd['mo'] = dfd.index.month
-    dfd.boxplot(by='mo')
+    dfd[:-1].boxplot(by='mo')          # last day may be partial, eliminate
     gca().set_xticklabels(MONTH_NAMES)
     xlabel('')
     ylabel('kWh in Day')
@@ -288,7 +288,7 @@ if settings.PLOT:
     dfd = df.resample('1D').sum() / 12000.
     dfd.columns = ['kWh']
     dfd['day_of_year'] = dfd.index.dayofyear
-    dfd.plot.scatter(x='day_of_year', y='kWh', s=4)
+    dfd[:-1].plot.scatter(x='day_of_year', y='kWh', s=4)    # last day may be partial, eliminate
     ylabel('kWh in Day')
     xlabel('Day of Year');
     xticks(doy_locs, doy_lbls)
