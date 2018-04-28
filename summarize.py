@@ -109,7 +109,7 @@ def get_data(use_dst=True):
         akst_adj = timedelta(hours=9)
         dfd['dts'] = dfd.dts - akst_adj
     dfd.set_index('dts', inplace=True)
-    dfd.drop_duplicates(keep='last', inplace=True)
+    dfd = dfd[~dfd.index.duplicated(keep='last')]
     dfd = dfd.asfreq('5T', fill_value=0.0)
     if use_dst:
         dfd.index = dfd.index.tz_localize('UTC').tz_convert('US/Alaska').tz_localize(None)
