@@ -135,14 +135,15 @@ if settings.PLOT:
 
     df = get_data(use_dst=True)
 
-    # kWh bar graph for last ten days' production
+    # kWh bar graph for last 4 weeks production
     dfd = df.resample('1D').sum()/12000.
     dfd.columns=['kWh']
-    dfdt = dfd.tail(14)
-    dfdt.index = dfdt.index.astype(str).str[:10]
-    dfdt.plot.barh(legend=False)
+    dfdt = dfd.tail(28)
+    dfdt.plot.barh(legend=False, width=0.8, figsize=(12, 12))
     grid(axis='y')
-    ylabel('Date')
+    yticklabels = [d.strftime('%b %d') for d in dfdt.index]
+    yticks(range(len(dfdt)), yticklabels)
+    gca().get_yaxis().get_label().set_visible(False)
     xlabel('kWh produced in Day')
     for i in range(len(dfdt)):
         kWh = dfdt.iloc[i].kWh 
@@ -155,6 +156,9 @@ if settings.PLOT:
     save_plot('last_days')
 
     # Plot last few days in data set.
+    # Change index to a string
+    dfdt.index = dfdt.index.astype(str).str[:10]
+
     clf()
     cur_day = dfdt.index[-1]
     prev_day = dfdt.index[-2]
