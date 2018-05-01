@@ -195,6 +195,7 @@ if settings.PLOT:
             (min_day, '{} min'.format(min_day))
     )
     
+    figure(figsize=(10, 7))
     for dt, lbl in plot_days:
         df_1day = df[dt]
         if dt==cur_day:
