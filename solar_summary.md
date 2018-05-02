@@ -21,7 +21,7 @@ The code for acquiring the solar data and creating this page is available at
 
 ### Recent Production
 
-This shows the daily energy production from the system for the last two weeks.  Note that
+This shows the daily energy production from the system for the last four weeks.  Note that
 the most recent day, shown at top, could be a partial day or could be yesterday if no production
 has been reported yet today.  (There are sometimes delays in reporting production at the start 
 of the day.)
@@ -29,7 +29,7 @@ of the day.)
 ![daily production](images/last_days.png?q=1)
 
 Here is a graph of the power production today (thick blue line), yesterday (thin red line), 
-and the days with minimum and maximum energy production during the last two weeks
+and the days with minimum and maximum energy production during the last four weeks
 (thinner dashed lines):
 
 ![today's production](images/last_day.png?q=1)
