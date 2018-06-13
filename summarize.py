@@ -134,6 +134,8 @@ rcParams['font.size'] = 14            # set Font size in Chart
 if settings.PLOT:
 
     df = get_data(use_dst=True)
+    # Save it to a pickle file for download
+    df.to_pickle('df_solar.pkl')
 
     # kWh bar graph for last 4 weeks production
     dfd = df.resample('1D').sum()/12000.
