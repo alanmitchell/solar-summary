@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3.6
+#!/usr/local/bin/python3cde
 """Script to collect and summarize 5 minute power production data 
 from an Enphase Solar PV system.  The data collection portion of the
 script adds 5 minute power production records to the 'records.csv' file
@@ -90,13 +90,13 @@ if settings.COLLECT:
 
 #-----------------------------------------------------------------------------
 # Plot creation portion of the script
-
-MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+MONTH_LIST = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+MONTH_NAMES = dict(zip(range(1, 13), MONTH_LIST))
 
 def get_data(use_dst=True):
     """ Read the data, delete device count column.
-    Rembmer that the timestamps mark the end of the interval
-    Make a Date/Time field, Alaska Time, and use it for the 
+    Remember that the timestamps mark the end of the interval
+    Make a Date/Time field, New York Time, and use it for the 
     index.  Fill out missing 5 minute intervals with 0s.
     If 'use_dst' is True, account for Daylight Savings Time.
     Drop the 'usecols' parameter to get the 'device_count' column
@@ -112,7 +112,7 @@ def get_data(use_dst=True):
     dfd = dfd[~dfd.index.duplicated(keep='last')]
     dfd = dfd.asfreq('5T', fill_value=0.0)
     if use_dst:
-        dfd.index = dfd.index.tz_localize('UTC').tz_convert('US/Alaska').tz_localize(None)
+        dfd.index = dfd.index.tz_localize('UTC').tz_convert('US/Eastern').tz_localize(None)
 
     return dfd
 
@@ -221,7 +221,7 @@ if settings.PLOT:
     dfmp = pd.pivot_table(dfm, values='power', index='mo', columns='yr')
     dfmp.plot(marker='o', linewidth=1)
     xticks(range(0,13))
-    gca().set_xticklabels([''] + MONTH_NAMES)
+    gca().set_xticklabels([''] + MONTH_LIST)
     ylabel('kWh in Month')
     xlabel('Month')
     save_plot('by_month_by_year')
@@ -240,20 +240,18 @@ if settings.PLOT:
     dfd['day_of_year'] = dfd.index.dayofyear
     dfd['yr'] = dfd.index.year
     dfdp = pd.pivot_table(dfd, values='power', index='day_of_year', columns='yr')
-    dfdp.drop([2016], axis=1, inplace=True)   # doesn't start at beginning of year
     dfdp.cumsum().plot()
     ylabel('Cumulative kWh')
     xlabel('Day of Year')
     xticks(doy_locs, doy_lbls)
     xlim(-5, 370)
-    ylim(0, 2500);
+    ylim(0);
     save_plot('cum_kwh')
 
     # Zoomed in version of the above, just up to the current day.
-    dfcs = dfdp.cumsum().dropna()
+    cur_day_num = dfd.day_of_year[-1]
+    dfcs = dfdp.cumsum().query('index <= @cur_day_num')
     lr = dfcs.iloc[-1]
-    ahead = lr[2018] - lr[2017]
-    print('2018 kWh - 2017 kWh: {:.0f} kWh'.format(ahead))
     dfcs.plot()
     xlabel('Day of Year');
     ylabel('Cumulative kWh')
@@ -267,7 +265,7 @@ if settings.PLOT:
     dfb['Hour'] = dfb.index.hour
     dfb['mo'] = dfb.index.month
     dfbp = dfb.pivot_table(values='power', index='Hour', columns='mo', aggfunc='mean')
-    dfbp.columns = MONTH_NAMES
+    dfbp.rename(columns=MONTH_NAMES, inplace=True)
     dfbp.plot(subplots=True, layout=(4, 3), figsize=(12, 16), sharex=True, sharey=True)
     yticks(range(0, 3000, 500));
     save_plot('monthly_profile')
@@ -277,7 +275,7 @@ if settings.PLOT:
     dfb.groupby('mo').agg('max')['power'].plot(marker='o', linewidth=1, figsize=(10, 7))
     ylabel('Maximum Power Production, Watts')
     xticks(range(0,13))
-    gca().set_xticklabels([''] + MONTH_NAMES);
+    gca().set_xticklabels([''] + MONTH_LIST);
     save_plot('max_power')
 
     # Box plot of daily energy production for each month.
@@ -285,7 +283,8 @@ if settings.PLOT:
     dfd.columns = ['Daily kWh']
     dfd['mo'] = dfd.index.month
     dfd[:-1].boxplot(by='mo')          # last day may be partial, eliminate
-    gca().set_xticklabels(MONTH_NAMES)
+    mo_list = dfd[:-1].mo.unique()
+    gca().set_xticklabels( [MONTH_NAMES[mo] for mo in mo_list] )
     xlabel('')
     ylabel('kWh in Day')
     title('')
@@ -323,13 +322,16 @@ if settings.PLOT:
     save_plot('max_power_day')
 
     # Plot rolling sum of AC kWh Produced per DC kW installed
-    dfr = (df.resample('1D').sum() / 12000. / settings.SYSTEM_KW).rolling(365).sum()
-    avg_norm = dfr.mean().power
-    dfr.plot(legend=False)
-    xlabel('End of 365 Day Period')
-    ylabel('AC kWh Produced / DC kW installed')
-    text(0.07, 0.85, 
-        'Average: {:.0f} kWh-AC / kW-DC installed'.format(avg_norm), 
-        transform=gca().transAxes,
-        color='green')    
-    save_plot('rolling_yr_kwh')
+    # if enough days are there.
+    df_day_tot = df.resample('1D').sum() 
+    if len(df_day_tot) >= 365:
+        dfr = (df_day_tot / 12000. / settings.SYSTEM_KW).rolling(365).sum()
+        avg_norm = dfr.mean().power
+        dfr.plot(legend=False)
+        xlabel('End of 365 Day Period')
+        ylabel('AC kWh Produced / DC kW installed')
+        text(0.07, 0.85, 
+            'Average: {:.0f} kWh-AC / kW-DC installed'.format(avg_norm), 
+            transform=gca().transAxes,
+            color='green')    
+        save_plot('rolling_yr_kwh')
