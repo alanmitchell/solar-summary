@@ -246,7 +246,7 @@ if settings.PLOT:
     xlabel('Day of Year')
     xticks(doy_locs, doy_lbls)
     xlim(-5, 370)
-    ylim(0, 2500);
+    ylim(0, 2600);
     save_plot('cum_kwh')
 
     # Zoomed in version of the above, just up to the current day.
