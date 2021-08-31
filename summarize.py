@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3.6
+#!/usr/bin/env python3
 """Script to collect and summarize 5 minute power production data 
 from an Enphase Solar PV system.  The data collection portion of the
 script adds 5 minute power production records to the 'records.csv' file
@@ -158,31 +158,32 @@ if settings.PLOT:
     save_plot('last_days')
 
     # Plot last few days in data set.
-    # Change index to a string
-    dfdt.index = dfdt.index.astype(str).str[:10]
+
+    def day_to_lbl(d):
+        return str(d)[:10]
 
     clf()
     cur_day = dfdt.index[-1]
     prev_day = dfdt.index[-2]
-    max_day = str(dfdt.kWh.idxmax())
-    min_day = str(dfdt[:-1].kWh.idxmin())
+    max_day = dfdt.kWh.idxmax()
+    min_day = dfdt[:-1].kWh.idxmin()
 
     max_done = False
     min_done = False
     if cur_day == max_day:
-        cur_day_lbl = '{} max'.format(cur_day)
+        cur_day_lbl = f'{day_to_lbl(cur_day)} max'
         max_done = True
     else:
-        cur_day_lbl = cur_day
+        cur_day_lbl = day_to_lbl(cur_day)
 
     if prev_day == max_day:
-        prev_day_lbl = '{} max'.format(prev_day)
+        prev_day_lbl = f'{day_to_lbl(prev_day)} max'
         max_done = True
     elif prev_day == min_day:
-        prev_day_lbl = '{} min'.format(prev_day)
+        prev_day_lbl = f'{day_to_lbl(prev_day)} min'
         min_done = True
     else:
-        prev_day_lbl = prev_day
+        prev_day_lbl = day_to_lbl(prev_day)
         
     plot_days = [
         (cur_day, cur_day_lbl),
@@ -190,24 +191,25 @@ if settings.PLOT:
     ]
     if not max_done:
         plot_days.append(
-            (max_day, '{} max'.format(max_day))
+            (max_day, f'{day_to_lbl(max_day)} max')
         )
     if not min_done:
         plot_days.append(
-            (min_day, '{} min'.format(min_day))
+            (min_day, f'{day_to_lbl(min_day)} min')
     )
-    
+
     figure(figsize=(10, 7))
     for dt, lbl in plot_days:
-        df_1day = df[dt]
+        df_1day = df.loc[str(dt) : str(dt + pd.Timedelta('86399S'))]   # through last second of day
+        xvals = [t.hour + t.minute/60 for t in df_1day.index.time]
         if dt==cur_day:
-            plot(df_1day.index.time, df_1day.power, linewidth=3, label=lbl)
+            plot(xvals, df_1day.power, linewidth=3, label=lbl)
         elif dt==prev_day:
-            plot(df_1day.index.time, df_1day.power, linewidth=1.2, label=lbl)
+            plot(xvals, df_1day.power, linewidth=1.2, label=lbl)
         else:
-            plot(df_1day.index.time, df_1day.power, linewidth=1.2, linestyle='--', label=lbl)        
+            plot(xvals, df_1day.power, linewidth=1.2, linestyle='--', label=lbl)        
             
-    xticks(pd.date_range('0:00', '22:00', freq='2H').time, range(0, 24, 2))
+    xticks(range(0, 24, 2)) 
     legend()
     ylabel('Power Produced Today, Watts')
     xlabel('Hour of Day')
@@ -305,7 +307,7 @@ if settings.PLOT:
     imax = dfd.kWh.idxmax()
     d = str(imax)[:10]
     max_e = dfd.loc[imax].kWh
-    df[d].plot(legend=False)
+    df.loc[d].plot(legend=False)
     title('Day with Most Energy: {}, {:.1f} kWh'.format(d, max_e))
     xlabel('Time')
     ylabel('Power, Watts');
@@ -315,7 +317,7 @@ if settings.PLOT:
     imax = df.power.idxmax()
     d = str(imax)[:10]
     max_p = df.loc[imax].power
-    df[d].plot(legend=False)
+    df.loc[d].plot(legend=False)
     title('Day with Maximum Peak Power: {}, {:.0f} Watts'.format(d, max_p))
     xlabel('Time')
     ylabel('Power, Watts')

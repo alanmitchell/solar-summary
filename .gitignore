@@ -1,6 +1,7 @@
 settings.py
 last_ts
 records.csv
+df_solar.pkl
 images/*.png
 !images/Powered_By_Enphase_Logo.png
 
