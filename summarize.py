@@ -71,7 +71,7 @@ if settings.COLLECT:
         print(start_at)
         payload['start_at'] =  start_at
         res = requests.get(url + 'stats', params=payload).json()
-        if 'intervals' not in res:
+        if 'intervals' not in res or len(res['intervals'])==0:
             break
         recs = list(map(lambda r: (r['end_at'], r['devices_reporting'], r['powr']), res['intervals']))
         if len(recs):
