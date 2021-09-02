@@ -71,7 +71,7 @@ if settings.COLLECT:
         print(start_at)
         payload['start_at'] =  start_at
         res = requests.get(url + 'stats', params=payload).json()
-        if 'intervals' not in res or len(res['intervals'])==0:
+        if 'intervals' not in res:
             break
         recs = list(map(lambda r: (r['end_at'], r['devices_reporting'], r['powr']), res['intervals']))
         if len(recs):
@@ -85,6 +85,9 @@ if settings.COLLECT:
             # beyond the current time.
             if time.time() > start_at + 24*3600:
                 start_at += 24*3600
+        # if we are within an hour of the current time, dont't call the API again.
+        if start_at > time.time() - 3600:
+            break
 
     open(FN_LAST_TS, 'w').write(str(start_at))
 
