@@ -85,8 +85,8 @@ if settings.COLLECT:
             # beyond the current time.
             if time.time() > start_at + 24*3600:
                 start_at += 24*3600
-        # if we are within an hour of the current time, dont't call the API again.
-        if start_at > time.time() - 3600:
+        # if we are within a week of the current time, dont't call the API again.
+        if start_at > time.time() - 3600*24*7:
             break
 
     open(FN_LAST_TS, 'w').write(str(start_at))
