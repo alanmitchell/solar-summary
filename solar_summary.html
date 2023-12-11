@@ -60,6 +60,7 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<p><a href="https://analysisnorth.com">Back to Analysis North Website</a></p>
 <p>Analysis North has a 2.85 kW-DC grid-connected photovoltaic solar system installed at our place of business in Anchorage, Alaska (Alan Mitchell’s house). The system consists of ten 285 Watt SW 285 SolarWorld panels coupled to ten Enphase S280 microinverters with a total capacity of 2.80 kW-AC. The system is roof-mounted, tilted at 45 degrees and oriented 8 degrees West of South.</p>
 <p>The graphs below summarize the performance of the system to date. These graphs are updated every 10 minutes; press F5 to have your browser refresh the data.</p>
 <p>The code for acquiring the solar data and creating this page is available at <a href="https://github.com/alanmitchell/solar-summary">Alan Mitchell’s GitHub site</a>.</p>
@@ -68,58 +69,50 @@ ul.task-list li input[type="checkbox"] {
 <p>This shows the daily energy production from the system for the last four weeks. Note that the most recent day, shown at top, could be a partial day or could be the last day that had non-zero production.</p>
 <div class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
-<p><img src="solar_summary_files/figure-html/cell-3-output-1.png" width="745" height="725"></p>
+<p><img src="solar_summary_files/figure-html/cell-3-output-1.png" width="778" height="723"></p>
 </div>
 </div>
 <p>Here is a graph of the power production today (thick blue line), yesterday (thin red line), and the days with minimum and maximum energy production during the last four weeks (thinner dashed lines):</p>
 <div class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
-<pre><code>&lt;Figure size 672x480 with 0 Axes&gt;</code></pre>
-</div>
-<div class="cell-output cell-output-display">
-<p><img src="solar_summary_files/figure-html/cell-4-output-2.png" width="779" height="503"></p>
+<p><img src="solar_summary_files/figure-html/cell-4-output-1.png" width="777" height="501"></p>
 </div>
 </div>
 </section>
 <section id="cumulative-energy-production-for-the-year" class="level2">
 <h2 class="anchored" data-anchor-id="cumulative-energy-production-for-the-year">Cumulative Energy Production for the Year</h2>
 <p>This graph shows the cumulative energy production of the system for the current year and for all previous years as separate lines. For example, a value of 300 kWh on the Y-axis for March 20 means that a total of 300 kWh were produced for the days of the year prior to March 20.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/cum_kwh.png?q=1" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">cumulative production</figcaption>
-</figure>
+<div class="cell" data-execution_count="4">
+<div class="cell-output cell-output-display">
+<p><img src="solar_summary_files/figure-html/cell-5-output-1.png" width="785" height="501"></p>
+</div>
 </div>
 <p>This graph below is the same as above except it does not show days of the year beyond the current day.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/cum_kwh_partial.png?q=1" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">cumulative production</figcaption>
-</figure>
+<div class="cell" data-execution_count="5">
+<div class="cell-output cell-output-display">
+<p><img src="solar_summary_files/figure-html/cell-6-output-1.png" width="785" height="501"></p>
+</div>
 </div>
 </section>
 <section id="monthly-energy-and-power" class="level2">
 <h2 class="anchored" data-anchor-id="monthly-energy-and-power">Monthly Energy and Power</h2>
 <p>This graph shows the total number of kWh produced in each month; each year is shown on a separate line so monthly comparisons between years are possible. Note that the most recent month is usually a partial month so will appear to have a low value.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/by_month_by_year.png?q=1" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">monthly production</figcaption>
-</figure>
+<div class="cell" data-execution_count="6">
+<div class="cell-output cell-output-display">
+<p><img src="solar_summary_files/figure-html/cell-7-output-1.png" width="777" height="501"></p>
+</div>
 </div>
 <p>This graph shows the peak power production that has occurred in each month. It finds the peak power across <em>all</em> of the years of data for each month.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/max_power.png?q=1" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">monthly peak power</figcaption>
-</figure>
+<div class="cell" data-execution_count="7">
+<div class="cell-output cell-output-display">
+<p><img src="solar_summary_files/figure-html/cell-8-output-1.png" width="785" height="501"></p>
+</div>
 </div>
 <p>Below, an average production profile is shown for each month. The Y-axis value is average power in Watts produced for the hour (0 - 23) shown on the X-axis.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/monthly_profile.png?q=1" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">monthly profiles</figcaption>
-</figure>
+<div class="cell" data-execution_count="8">
+<div class="cell-output cell-output-display">
+<p><img src="solar_summary_files/figure-html/cell-9-output-1.png" width="772" height="1245"></p>
+</div>
 </div>
 </section>
 <section id="spread-of-daily-production-values" class="level2">
