@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Analysis North Solar Data</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="solar_summary_files/libs/clipboard/clipboard.min.js"></script>
+<script src="solar_summary_files/libs/quarto-html/quarto.js"></script>
+<script src="solar_summary_files/libs/quarto-html/popper.min.js"></script>
+<script src="solar_summary_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="solar_summary_files/libs/quarto-html/anchor.min.js"></script>
+<link href="solar_summary_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="solar_summary_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="solar_summary_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="solar_summary_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="solar_summary_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Analysis North Solar Data</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Analysis North has a 2.85 kW-DC grid-connected photovoltaic solar system installed at our place of business in Anchorage, Alaska (Alan Mitchell’s house). The system consists of ten 285 Watt SW 285 SolarWorld panels coupled to ten Enphase S280 microinverters with a total capacity of 2.80 kW-AC. The system is roof-mounted, tilted at 45 degrees and oriented 8 degrees West of South.</p>
+<p>The graphs below summarize the performance of the system to date. These graphs are updated every 10 minutes; press F5 to have your browser refresh the data.</p>
+<p>The code for acquiring the solar data and creating this page is available at <a href="https://github.com/alanmitchell/solar-summary">Alan Mitchell’s GitHub site</a>.</p>
+<section id="recent-production" class="level2">
+<h2 class="anchored" data-anchor-id="recent-production">Recent Production</h2>
+<p>This shows the daily energy production from the system for the last four weeks. Note that the most recent day, shown at top, could be a partial day or could be the last day that had non-zero production.</p>
+<div class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display">
+<p><img src="solar_summary_files/figure-html/cell-3-output-1.png" width="745" height="725"></p>
+</div>
+</div>
+<p>Here is a graph of the power production today (thick blue line), yesterday (thin red line), and the days with minimum and maximum energy production during the last four weeks (thinner dashed lines):</p>
+<div class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display">
+<pre><code>&lt;Figure size 672x480 with 0 Axes&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="solar_summary_files/figure-html/cell-4-output-2.png" width="779" height="503"></p>
+</div>
+</div>
+</section>
+<section id="cumulative-energy-production-for-the-year" class="level2">
+<h2 class="anchored" data-anchor-id="cumulative-energy-production-for-the-year">Cumulative Energy Production for the Year</h2>
+<p>This graph shows the cumulative energy production of the system for the current year and for all previous years as separate lines. For example, a value of 300 kWh on the Y-axis for March 20 means that a total of 300 kWh were produced for the days of the year prior to March 20.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/cum_kwh.png?q=1" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">cumulative production</figcaption>
+</figure>
+</div>
+<p>This graph below is the same as above except it does not show days of the year beyond the current day.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/cum_kwh_partial.png?q=1" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">cumulative production</figcaption>
+</figure>
+</div>
+</section>
+<section id="monthly-energy-and-power" class="level2">
+<h2 class="anchored" data-anchor-id="monthly-energy-and-power">Monthly Energy and Power</h2>
+<p>This graph shows the total number of kWh produced in each month; each year is shown on a separate line so monthly comparisons between years are possible. Note that the most recent month is usually a partial month so will appear to have a low value.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/by_month_by_year.png?q=1" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">monthly production</figcaption>
+</figure>
+</div>
+<p>This graph shows the peak power production that has occurred in each month. It finds the peak power across <em>all</em> of the years of data for each month.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/max_power.png?q=1" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">monthly peak power</figcaption>
+</figure>
+</div>
+<p>Below, an average production profile is shown for each month. The Y-axis value is average power in Watts produced for the hour (0 - 23) shown on the X-axis.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/monthly_profile.png?q=1" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">monthly profiles</figcaption>
+</figure>
+</div>
+</section>
+<section id="spread-of-daily-production-values" class="level2">
+<h2 class="anchored" data-anchor-id="spread-of-daily-production-values">Spread of Daily Production Values</h2>
+<p>This boxplot show the spread and the median daily energy production values for each month.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/monthly_box.png?q=1" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">monthly box plot</figcaption>
+</figure>
+</div>
+<p>In the plot below, each dot is data from one day. The Y-axis value is the kWh energy produced during the day, and the X-axis value is the day of the year. So, the graph also is good at showing the distribution of daily energy production values that occur at different times of the year.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/daily_production.png?q=1" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">daily production</figcaption>
+</figure>
+</div>
+</section>
+<section id="record-setting-days" class="level2">
+<h2 class="anchored" data-anchor-id="record-setting-days">Record-Setting Days</h2>
+<p>Here is the day where the most kWh were produced:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/max_energy_day.png?q=1" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">day with maximum energy</figcaption>
+</figure>
+</div>
+<p>Here is the day that had the highest 5 minute power production. This is generally a day where the solar noon sun comes out from behind some clouds. As well as the solar panels receiving the direct sun, they also receive substantial radiation from sun rays redirected as they pass through the clouds adjacent to the sun.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/max_power_day.png?q=1" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">day with maximum peak power</figcaption>
+</figure>
+</div>
+</section>
+<section id="an-important-number-normalized-annual-production" class="level2">
+<h2 class="anchored" data-anchor-id="an-important-number-normalized-annual-production">An Important Number: Normalized Annual Production</h2>
+<p>Here is a graph of an important performance number for the system. If you take the production of the system for a year in kWh (AC delivered to the grid) and then divide by the rated capacity of the system in kW (rated DC panel capacity), you have calculated normalized annual production for the system. For example, a normalized production of 850 kWh-AC / kW-DC means that each 1 kW of rated capacity in this system produces 850 kWh-AC of electricity for the year. For this particular system, this number will vary due to how sunny the year is, dirt and snow accumulation on the panels, and due to general degradation of output over time. When comparing to other systems, the number will vary due to additional factors such location of the system, tilt and orientation, shading, etc. Normalized production in California is quite a bit more than Alaska.</p>
+<p>The graph below plots this normalized production on rolling year basis. The first point shown below is for October 1, 2017 and has a value of about 848 kWh / kW. That means for the 365 days prior to October 1, 2017, the system produced 848 kWh for each 1 kW of installed capacity. Each additional point on the line indicates the normalized production for the 365 days preceding the date on the horizontal axis.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/rolling_yr_kwh.png?q=1" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">rolling normalized production</figcaption>
+</figure>
+</div>
+<hr>
+<p>
+Powered by: <a href="http://enphase.com"><img alt="Enphase Logo" src="images/Powered_By_Enphase_Logo.png" width="200"></a>
+</p>
+<p>Solar data is acquired through use of the Enphase API (application programming interface).<br>
+All data analysis and graphing is custom programming done by Analyis North and is available at <a href="https://github.com/alanmitchell/solar-summary">Alan Mitchell’s GitHub site</a>.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

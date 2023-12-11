@@ -1,9 +1,61 @@
-Title: Analysis North Solar Data
-Template: page_no_title
-URL: /enphase/soloar_summary.html
-Save_As: enphase/solar_summary.html
+---
+title: "Analysis North Solar Data"
+format:
+  html:
+    echo: false
+jupyter: python3
+---
+```{python}
+import time
+from datetime import timedelta, datetime
+import pandas as pd
+import matplotlib
+import matplotlib.pyplot as plt
 
-## Data from Analysis North Solar PV System
+import warnings
+# Suppress all warnings
+warnings.filterwarnings("ignore")
+
+import settings
+
+# path to this directory
+#APP_PATH = dirname(realpath(__file__))
+FN_RECORDS = 'records.csv'
+
+MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+
+def get_data(use_dst=True):
+    """ Read the data, delete device count column.
+    Rembmer that the timestamps mark the end of the interval
+    Make a Date/Time field, Alaska Time, and use it for the 
+    index.  Fill out missing 5 minute intervals with 0s.
+    If 'use_dst' is True, account for Daylight Savings Time.
+    Drop the 'usecols' parameter to get the 'device_count' column
+    as well.
+    """
+    dfd = pd.read_csv(FN_RECORDS, usecols=['ts', 'power'])
+    dfd['dts'] = pd.to_datetime(dfd.ts, unit='s')
+    dfd.drop(['ts'], axis=1, inplace=True)
+    if not use_dst:
+        akst_adj = timedelta(hours=9)
+        dfd['dts'] = dfd.dts - akst_adj
+    dfd.set_index('dts', inplace=True)
+    dfd = dfd[~dfd.index.duplicated(keep='last')]
+    dfd = dfd.asfreq('5T', fill_value=0.0)
+    if use_dst:
+        dfd.index = dfd.index.tz_localize('UTC').tz_convert('US/Alaska').tz_localize(None)
+        dfd = dfd.sort_index()
+
+    return dfd
+
+# 'style' the plot like fivethirtyeight.com website
+#plt.style.use('bmh')
+
+#plt.rcParams['figure.figsize']= (10, 7)   # set Chart Size
+#plt.rcParams['font.size'] = 14            # set Font size in Chart
+
+df = get_data(use_dst=True)
+```
 
 Analysis North has a 2.85 kW-DC grid-connected photovoltaic solar system installed at our place
 of business in Anchorage, Alaska (Alan Mitchell's house).  The system consists of
@@ -19,22 +71,100 @@ the data.
 The code for acquiring the solar data and creating this page is available at 
 [Alan Mitchell's GitHub site](https://github.com/alanmitchell/solar-summary).
 
-### Recent Production
+## Recent Production
 
 This shows the daily energy production from the system for the last four weeks.  Note that
-the most recent day, shown at top, could be a partial day or could be yesterday if no production
-has been reported yet today.  (There are sometimes delays in reporting production at the start 
-of the day.)
+the most recent day, shown at top, could be a partial day or could be the last day that
+had non-zero production.
 
-![daily production](images/last_days.png?q=1)
+```{python}
+# kWh bar graph for last 4 weeks production
+dfd = df.resample('1D').sum()/12000.
+dfd.columns=['kWh']
+dfdt = dfd.tail(28)
+ax = dfdt.plot.barh(legend=False, width=0.8, figsize=(9, 9))
+ax.grid(True, axis='x')
+y_axis = ax.get_yaxis()
+yticklabels = [d.strftime('%b %d') for d in dfdt.index]
+y_axis.set_ticklabels(yticklabels)
+y_axis.get_label().set_visible(False)
+ax.set_xlabel('kWh produced in Day')
+for i in range(len(dfdt)):
+  kWh = dfdt.iloc[i].kWh 
+  if kWh > dfdt.kWh.max() * 0.07:
+    ax.text(kWh*.99, i-.15, 
+      '{:.2f}'.format(kWh), 
+      horizontalalignment='right',
+      weight='bold',
+      color='white')
+
+ax.get_figure().show()
+```
 
 Here is a graph of the power production today (thick blue line), yesterday (thin red line), 
 and the days with minimum and maximum energy production during the last four weeks
 (thinner dashed lines):
 
-![today's production](images/last_day.png?q=1)
+```{python}
+def day_to_lbl(d):
+  return str(d)[:10]
 
-### Cumulative Energy Production for the Year
+cur_day = dfdt.index[-1]
+prev_day = dfdt.index[-2]
+max_day = dfdt.kWh.idxmax()
+min_day = dfdt[:-1].kWh.idxmin()
+
+max_done = False
+min_done = False
+if cur_day == max_day:
+  cur_day_lbl = f'{day_to_lbl(cur_day)} max'
+  max_done = True
+else:
+  cur_day_lbl = day_to_lbl(cur_day)
+
+if prev_day == max_day:
+  prev_day_lbl = f'{day_to_lbl(prev_day)} max'
+  max_done = True
+elif prev_day == min_day:
+  prev_day_lbl = f'{day_to_lbl(prev_day)} min'
+  min_done = True
+else:
+  prev_day_lbl = day_to_lbl(prev_day)
+    
+plot_days = [
+    (cur_day, cur_day_lbl),
+    (prev_day, prev_day_lbl)
+]
+if not max_done:
+  plot_days.append(
+    (max_day, f'{day_to_lbl(max_day)} max')
+  )
+if not min_done:
+  plot_days.append(
+    (min_day, f'{day_to_lbl(min_day)} min')
+)
+
+plt.clf()
+plt.figure(figsize=(9.5, 6))
+for dt, lbl in plot_days:
+  df_1day = df.loc[str(dt) : str(dt + pd.Timedelta('86399S'))]   # through last second of day
+  xvals = [t.hour + t.minute/60 for t in df_1day.index.time]
+  if dt==cur_day:
+    plt.plot(xvals, df_1day.power, linewidth=3, label=lbl)
+  elif dt==prev_day:
+    plt.plot(xvals, df_1day.power, linewidth=1.2, label=lbl)
+  else:
+    plt.plot(xvals, df_1day.power, linewidth=1.2, linestyle='--', label=lbl)        
+
+plt.xticks(range(0, 24, 2))
+plt.legend()
+plt.ylabel('Power Produced Today, Watts')
+plt.xlabel('Hour of Day')
+plt.gcf().show()
+```
+
+
+## Cumulative Energy Production for the Year
 
 This graph shows the cumulative energy production of the system for the current year
 and for all previous years as separate lines.  For example, a value of 300 kWh on the
@@ -48,7 +178,7 @@ current day.
 
 ![cumulative production](images/cum_kwh_partial.png?q=1)
 
-### Monthly Energy and Power
+## Monthly Energy and Power
 
 This graph shows the total number of kWh produced in each month;
 each year is shown on a separate line so monthly comparisons between years
@@ -67,7 +197,7 @@ power in Watts produced for the hour (0 - 23) shown on the X-axis.
 
 ![monthly profiles](images/monthly_profile.png?q=1)
 
-### Spread of Daily Production Values
+## Spread of Daily Production Values
 
 This boxplot show the spread and the median daily energy production values for each
 month.
@@ -81,7 +211,7 @@ different times of the year.
 
 ![daily production](images/daily_production.png?q=1)
 
-### Record-Setting Days
+## Record-Setting Days
 
 Here is the day where the most kWh were produced:
 
@@ -94,7 +224,7 @@ sun rays redirected as they pass through the clouds adjacent to the sun.
 
 ![day with maximum peak power](images/max_power_day.png?q=1)
 
-### An Important Number: Normalized Annual Production
+## An Important Number: Normalized Annual Production
 
 Here is a graph of an important performance number for the system.  If you
 take the production of the system for a year in kWh (AC delivered to the grid) 

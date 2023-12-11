@@ -4,6 +4,7 @@ records.csv
 df_solar.pkl
 images/*.png
 !images/Powered_By_Enphase_Logo.png
+solar_summary_files/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
