@@ -13,6 +13,8 @@ import matplotlib
 import matplotlib.pyplot as plt
 plt.style.use('bmh')
 
+import plotly.express as px
+
 import warnings
 # Suppress all warnings
 warnings.filterwarnings("ignore")
@@ -49,10 +51,6 @@ def get_data(use_dst=True):
 
     return dfd
 
-# 'style' the plot like fivethirtyeight.com website
-#plt.style.use('bmh')
-
-#plt.rcParams['figure.figsize']= (10, 7)   # set Chart Size
 #plt.rcParams['font.size'] = 14            # set Font size in Chart
 
 df = get_data(use_dst=True)
@@ -87,6 +85,9 @@ the most recent day, shown at top, could be a partial day or could be the last d
 had non-zero production.
 
 ```{python}
+#| label: fig-last-4
+#| fig-cap: "Last Four Weeks of Daily kWh Production"
+
 # kWh bar graph for last 4 weeks production
 dfdt = dfd[['kWh']].tail(28)
 ax = dfdt.plot.barh(legend=False, width=0.8, figsize=(9.5, 9))
@@ -114,6 +115,9 @@ and the days with minimum and maximum energy production during the last four wee
 (thinner dashed lines):
 
 ```{python}
+#| label: fig-recent-production
+#| fig-cap: "Last Two Days compared to Recent Max and Min Production"
+
 def day_to_lbl(d):
   return str(d)[:10]
 
@@ -179,6 +183,9 @@ Y-axis for March 20 means that a total of 300 kWh were produced for the days of 
 prior to March 20.
 
 ```{python}
+#| label: fig-cumulative
+#| fig-cap: "Cumulative Production by Year"
+
 # Make a set of tick locations and labels for those plots that
 # plot against each day of the year.  Mark the start of each month.
 doy_locs = []
@@ -203,6 +210,9 @@ This graph below is the same as above except it does not show days of the year b
 current day.
 
 ```{python}
+#| label: fig-cum-partial
+#| fig-cap: "Cumulative Production by Year through Current Day"
+
 dfcs = dfdp.cumsum().dropna()
 ax = dfcs.plot(figsize=(9.5, 6))
 ax.set_xlabel('Day of Year');
@@ -217,26 +227,35 @@ ax.get_figure().show()
 
 This graph shows the total number of kWh produced in each month;
 each year is shown on a separate line so monthly comparisons between years
-are possible.  Note that the most recent month is usually a partial month so will
-appear to have a low value.
+are possible; the black dotted line is the average monthly production across all years.
+Note that the most recent month is usually a partial month so will
+appear to have a low value.  This is an interactive graph where you can 
+click and double-click individual years in the legend to turn them On or Off in the graph.
 
 ```{python}
+#| label: fig-monthly
+#| fig-cap: "Monthly Production by Year and Average across Years. Click Legend items to toggle Years On and Off."
+
 dfm = df.resample('1M').sum() / 12000.
 dfm['mo'] = dfm.index.month
 dfm['yr'] = dfm.index.year
 dfmp = pd.pivot_table(dfm, values='power', index='mo', columns='yr')
-ax = dfmp.plot(marker='o', linewidth=1, figsize=(9.5, 6))
-ax.set_xticks(range(0,13))
-ax.set_xticklabels([''] + MONTH_NAMES)
-ax.set_ylabel('kWh in Month')
-ax.set_xlabel('Month')
-ax.get_figure().show()
+dfmp['Average'] = dfmp.mean(axis=1)
+fig = px.line(dfmp, markers=True, line_shape='linear')
+fig.update_traces(line=dict(color='black', width=3, dash='dot'), mode='lines', selector=dict(name="Average"))
+fig.update_layout(width=780, height=550)
+fig.update_xaxes(tickvals=list(range(0, 13)), ticktext=[''] + MONTH_NAMES)
+fig.update_yaxes(title_text='kWh in Month')
+fig.update_xaxes(title_text='Month')
+fig.show()
 ```
-
 This graph shows the peak power production that has occurred in each month.  It finds
 the peak power across *all* of the years of data for each month.
 
 ```{python}
+#| label: fig-peak
+#| fig-cap: "Peak Power Production by Month"
+
 dfb = df.copy()
 dfb['Hour'] = dfb.index.hour
 dfb['mo'] = dfb.index.month
@@ -252,6 +271,9 @@ Below, an average production profile is shown for each month.  The Y-axis value 
 power in Watts produced for the hour (0 - 23) shown on the X-axis.
 
 ```{python}
+#| label: fig-monthly-hourly
+#| fig-cap: "Hourly Profiles of Production by Month"
+
 dfbp = dfb.pivot_table(values='power', index='Hour', columns='mo', aggfunc='mean')
 dfbp.columns = MONTH_NAMES
 ax = dfbp.plot(subplots=True, layout=(4, 3), figsize=(9.5, 16), sharex=True, sharey=True)
@@ -265,14 +287,74 @@ plt.gcf().show()
 This boxplot show the spread and the median daily energy production values for each
 month.
 
-![monthly box plot](images/monthly_box.png?q=1)
+```{python}
+#| label: fig-box-by-mo
+#| fig-cap: "Distribution of Daily Production by Month"
+dfd = df.resample('1D').sum() / 12000.
+dfd.columns = ['Daily kWh']
+dfd['mo'] = dfd.index.month
+ax = dfd[:-1].boxplot(by='mo', figsize=(9.5, 6))          # last day may be partial, eliminate
+fig = ax.get_figure()
+fig.suptitle('')
+ax.set_xticklabels(MONTH_NAMES)
+ax.set_xlabel('')
+ax.set_ylabel('kWh in Day')
+ax.set_title('')
+fig.show()
+```
 
 In the plot below, each dot is data from one day.  The Y-axis value is the kWh energy
 produced during the day, and the X-axis value is the day of the year.  So, the graph also
 is good at showing the distribution of daily energy production values that occur at
-different times of the year.
+different times of the year.  Hovering over a point will show the Date associated with the
+point. The three large red points are the last three days.  You can click-and-drag to zoom in
+on a sction of the plot.
 
-![daily production](images/daily_production.png?q=1)
+```{python}
+#| label: fig-daily-scatter
+#| fig-cap: "Scatter of Daily Production values by Time of Year"
+dfd = df.resample('1D').sum() / 12000.
+dfd.columns = ['kWh']
+dfd['day_of_year'] = dfd.index.dayofyear
+dfd_filtered = dfd[:-1].reset_index()
+dfd_filtered['date'] = dfd_filtered['dts'].dt.strftime('%Y-%m-%d')  # Assuming the index is a datetime
+dfd_filtered['kWh_produced'] = dfd_filtered['kWh'].apply(lambda x: f"{x:.2f} kWh")  # Format with 2 decimal places
+dfd_filtered['color'] = 'blue'
+dfd_filtered['color'].iloc[-3:] = 'red'
+dfd_filtered['size'] = 0.003
+dfd_filtered['size'].iloc[-3:] = 0.03
+
+hover_data = {
+  'date': True, 
+  'kWh_produced': True, 
+  'kWh': False, 
+  'day_of_year': False,
+  'color': False,
+  'size': False}
+
+fig = px.scatter(dfd_filtered, x='day_of_year', y='kWh', 
+                 hover_data=hover_data,
+                 color='color',
+                 size='size',
+        width=820, height=550)
+#fig.update_traces(marker=dict(size=3))
+fig.update_layout(
+    xaxis_title="Day of Year",
+    yaxis_title="kWh in Day",
+    xaxis = dict(
+        tickmode = 'array',
+        tickvals = doy_locs,
+        ticktext = doy_lbls
+    ),
+    showlegend=False,
+)
+
+# Set x-axis limits
+fig.update_xaxes(range=[-5, 370])
+
+# Show the plot
+fig.show()
+```
 
 ## Record-Setting Days
 
