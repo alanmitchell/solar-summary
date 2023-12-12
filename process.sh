@@ -2,5 +2,5 @@
 set +e
 source env/bin/activate
 ./collect.py
-quarto render index.qmd
+/usr/local/bin/quarto render index.qmd
 deactivate
