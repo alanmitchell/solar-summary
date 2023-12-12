@@ -2,10 +2,10 @@ settings.py
 last_ts
 records.csv
 df_solar.pkl
-solar_summary.html
+index.html
 images/*.png
 !images/Powered_By_Enphase_Logo.png
-solar_summary_files/
+index_files/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

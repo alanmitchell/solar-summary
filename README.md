@@ -1,21 +1,19 @@
 # solar-summary
 
 Collects 5 minute power production data from a solar PV system using Enphase
-microinverters.  Summarizes the energy and power production data from that system
-in a series of plots.
+microinverters.  Creates an HTML document that summarized the data with a
+series of graphs.
 
 The results of the script can be seen on the 
-[Analysis North Solar Data page](http://analysisnorth.com/enphase/solar_summary.html).
+[Analysis North Solar Data page](http://analysisnorth.com/docs/mtn-lake-solar/).
 
-See the doc string in the `summarize.py` script for more information on configuration of
-the script.
+Requirements for the server that creates the HTML document:
 
-As well as adding 5 minute power production records to the `records.csv` file created
-by the script, this script creates a number of summary plots and saves them into the 
-`images` subdirectory beneath the directory where the script is located.
+* The HTML document is created with the [Quarto](https://quarto.org/) publishing
+system. Quarto must be installed on the server creating this document.  
+* A Python virtual environment also needs to be set up in
+the `env` directory of the repository.  That environment must have the Python
+packages from `requirements.txt`.
+* A `cron` task should be set up to run the `process.sh` file in this
+repository every 20 minutes.
 
-The `solar_summary.md` file is a Markdown file that describes and displays the plots
-created by this script.  It is formatted to be used with the 
-[Pelican static web site generation system](http://docs.getpelican.com/en/stable/).  It assumes
-that the plot images created by this script are present in an `images` directory located beneath
-the Pelican web page.

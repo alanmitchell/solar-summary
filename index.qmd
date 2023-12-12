@@ -64,6 +64,17 @@ dfd['yr'] = dfd.index.year
 
 [Back to Analysis North Website](https://analysisnorth.com)
 
+```{python}
+from IPython.display import Markdown
+import pytz
+
+timezone = pytz.timezone('America/Anchorage')
+current_time = datetime.now(timezone)
+datetime_string = current_time.strftime('%Y-%m-%d %H:%M:%S')
+
+Markdown(f'**Report Generated:** {datetime_string} Alaska Time')
+```
+
 A 2.85 kW-DC grid-connected photovoltaic solar system is installed at the Analysis North
 office in Anchorage, Alaska (Alan Mitchell's residence).  The system consists of
 ten 285 Watt SW 285 SolarWorld panels coupled to ten Enphase S280 microinverters
@@ -416,7 +427,7 @@ date on the horizontal axis.
 
 ```{python}
 #| label: fig-rolling-year
-#| fig-cap: "Normalized Annual Production, Rolling Average"
+#| fig-cap: "Normalized Annual Production, Rolling Yearly Average"
 dfr = (df.resample('1D').sum() / 12000. / settings.SYSTEM_KW).rolling(365).sum()
 avg_norm = dfr.mean().power
 ax = dfr.plot(legend=False, figsize=(9.5, 6))

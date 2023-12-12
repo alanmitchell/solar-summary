@@ -3,4 +3,6 @@ requests
 matplotlib
 plotly
 jupyter
+ipython
+pytz
 quarto
