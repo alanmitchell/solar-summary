@@ -64,8 +64,8 @@ dfd['yr'] = dfd.index.year
 
 [Back to Analysis North Website](https://analysisnorth.com)
 
-Analysis North has a 2.85 kW-DC grid-connected photovoltaic solar system installed at our place
-of business in Anchorage, Alaska (Alan Mitchell's house).  The system consists of
+A 2.85 kW-DC grid-connected photovoltaic solar system is installed at the Analysis North
+office in Anchorage, Alaska (Alan Mitchell's residence).  The system consists of
 ten 285 Watt SW 285 SolarWorld panels coupled to ten Enphase S280 microinverters
 with a total capacity of 2.80 kW-AC.
 The system is roof-mounted, tilted at 45 degrees and oriented 8 degrees
