@@ -8,16 +8,16 @@ jupyter: python3
 ```{python}
 import time
 from datetime import timedelta, datetime
+import warnings
+warnings.filterwarnings("ignore")
+
 import pandas as pd
+
 import matplotlib
 import matplotlib.pyplot as plt
 plt.style.use('bmh')
 
 import plotly.express as px
-
-import warnings
-# Suppress all warnings
-warnings.filterwarnings("ignore")
 
 import settings
 
@@ -51,7 +51,7 @@ def get_data(use_dst=True):
 
     return dfd
 
-#plt.rcParams['font.size'] = 14            # set Font size in Chart
+#plt.rcParams['font.size'] = 12          # set Font size in Chart
 
 df = get_data(use_dst=True)
 
@@ -360,14 +360,36 @@ fig.show()
 
 Here is the day where the most kWh were produced:
 
-![day with maximum energy](images/max_energy_day.png?q=1)
+```{python}
+#| label: fig-max-energy
+#| fig-cap: "Day with Maximum Energy Production"
+imax = dfd.kWh.idxmax()
+d = str(imax)[:10]
+max_e = dfd.loc[imax].kWh
+ax = df.loc[d].plot(legend=False, figsize=(9.5, 6))
+ax.set_title('Day with Most Energy: {}, {:.1f} kWh'.format(d, max_e))
+ax.set_xlabel('Time')
+ax.set_ylabel('Power, Watts')
+ax.get_figure().show()
+```
 
 Here is the day that had the highest 5 minute power production.  This is generally
 a day where the solar noon sun comes out from behind some clouds.  As well as the 
 solar panels receiving the direct sun, they also receive substantial radiation from
 sun rays redirected as they pass through the clouds adjacent to the sun.
 
-![day with maximum peak power](images/max_power_day.png?q=1)
+```{python}
+#| label: fig-max-power
+#| fig-cap: "Day with Maximum Peak Power Output"
+imax = df.power.idxmax()
+d = str(imax)[:10]
+max_p = df.loc[imax].power
+ax = df.loc[d].plot(legend=False, figsize=(9.5, 6))
+ax.set_title('Day with Maximum Peak Power: {}, {:.0f} Watts'.format(d, max_p))
+ax.set_xlabel('Time')
+ax.set_ylabel('Power, Watts')
+ax.get_figure().show()
+```
 
 ## An Important Number: Normalized Annual Production
 
@@ -391,7 +413,20 @@ produced 848 kWh for each 1 kW of installed capacity.  Each additional point
 on the line indicates the normalized production for the 365 days preceding the
 date on the horizontal axis.
 
-![rolling normalized production](images/rolling_yr_kwh.png?q=1)
+```{python}
+#| label: fig-rolling-year
+#| fig-cap: "Normalized Annual Production, Rolling Average"
+dfr = (df.resample('1D').sum() / 12000. / settings.SYSTEM_KW).rolling(365).sum()
+avg_norm = dfr.mean().power
+ax = dfr.plot(legend=False, figsize=(9.5, 6))
+ax.set_xlabel('End of 365 Day Period')
+ax.set_ylabel('AC kWh Produced / DC kW installed')
+ax.text(0.03, 0.85, 
+  'Average: {:.0f} kWh-AC / kW-DC installed'.format(avg_norm), 
+  transform=ax.transAxes,
+  color='green')    
+ax.get_figure().show()
+```
 
 ---
 
