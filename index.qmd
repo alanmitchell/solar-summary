@@ -12,6 +12,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 import pandas as pd
+import sqlite3
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -21,35 +22,39 @@ import plotly.express as px
 
 import settings
 
-# path to this directory
-#APP_PATH = dirname(realpath(__file__))
-FN_RECORDS = 'records.csv'
+# path to the database
+db_path = 'records.db'
 
 MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
 
 def get_data(use_dst=True):
-    """ Read the data, delete device count column.
-    Rembmer that the timestamps mark the end of the interval
-    Make a Date/Time field, Alaska Time, and use it for the 
-    index.  Fill out missing 5 minute intervals with 0s.
-    If 'use_dst' is True, account for Daylight Savings Time.
-    Drop the 'usecols' parameter to get the 'device_count' column
-    as well.
-    """
-    dfd = pd.read_csv(FN_RECORDS, usecols=['ts', 'power'])
-    dfd['dts'] = pd.to_datetime(dfd.ts, unit='s')
-    dfd.drop(['ts'], axis=1, inplace=True)
-    if not use_dst:
-        akst_adj = timedelta(hours=9)
-        dfd['dts'] = dfd.dts - akst_adj
-    dfd.set_index('dts', inplace=True)
-    dfd = dfd[~dfd.index.duplicated(keep='last')]
-    dfd = dfd.asfreq('5T', fill_value=0.0)
-    if use_dst:
-        dfd.index = dfd.index.tz_localize('UTC').tz_convert('US/Alaska').tz_localize(None)
-        dfd = dfd.sort_index()
+  """ Read the data, delete device count column.
+  Rembmer that the timestamps mark the end of the interval
+  Make a Date/Time field, Alaska Time, and use it for the 
+  index.  Fill out missing 5 minute intervals with 0s.
+  If 'use_dst' is True, account for Daylight Savings Time.
+  Drop the 'usecols' parameter to get the 'device_count' column
+  as well.
+  """
+  conn = sqlite3.connect(db_path)
+  cursor = conn.cursor()
+  query = 'SELECT ts, power FROM power'
+  dfd = pd.read_sql(query, conn)
+  conn.close()
 
-    return dfd
+  dfd['dts'] = pd.to_datetime(dfd.ts, unit='s')
+  dfd.drop(['ts'], axis=1, inplace=True)
+  if not use_dst:
+    akst_adj = timedelta(hours=9)
+    dfd['dts'] = dfd.dts - akst_adj
+  dfd.set_index('dts', inplace=True)
+  dfd = dfd[~dfd.index.duplicated(keep='last')]
+  dfd = dfd.asfreq('5T', fill_value=0.0)
+  if use_dst:
+    dfd.index = dfd.index.tz_localize('UTC').tz_convert('US/Alaska').tz_localize(None)
+    dfd = dfd.sort_index()
+
+  return dfd
 
 #plt.rcParams['font.size'] = 12          # set Font size in Chart
 

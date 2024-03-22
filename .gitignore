@@ -1,6 +1,9 @@
 settings.py
+access.txt
+refresh.txt
 last_ts
 records.csv
+records.db
 df_solar.pkl
 index.html
 images/*.png
