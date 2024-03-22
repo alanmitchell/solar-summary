@@ -88,12 +88,11 @@ results = results.json()
 if len(results['intervals']):
     df = pd.DataFrame(results['intervals'])
     df.rename(columns={'end_at': 'ts', 'devices_reporting': 'device_count', 'powr': 'power'}, inplace=True)
-    df = df[['ts', 'device_count', 'power']]
     for ix, record in df.iterrows():
         ts = int(record['ts'])
         device_count = int(record['device_count'])
         power = int(record['power'])
-        # First, try to update the existing record
+        # First, try to update an existing record
         cursor.execute("""
             UPDATE power
             SET device_count = ?, power = ?
@@ -108,24 +107,3 @@ if len(results['intervals']):
     conn.commit()
 
 conn.close()
-
-# payload['start_at'] =  start_at
-# res = requests.get(url + 'stats', params=payload).json()
-
-# if 'intervals' not in res:
-#     break
-
-# recs = list(map(lambda r: (r['end_at'], r['devices_reporting'], r['powr']), res['intervals']))
-# if len(recs):
-#     with open(FN_RECORDS, 'a') as fout:
-#         for rec in recs:
-#             fout.write('{},{},{}\n'.format(*rec))
-#     start_at = recs[-1][0]
-
-# else:
-#     # sometimes there will be a 24 hour period without any reports, so advance
-#     # the starting time a day and try again.  Only do this if it will not advance
-#     # beyond the current time.
-#     if time.time() > start_at + 24*3600:
-#         start_at += 24*3600
-
