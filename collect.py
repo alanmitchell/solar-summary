@@ -88,7 +88,8 @@ results = results.json()
 if len(results['intervals']):
     df = pd.DataFrame(results['intervals'])
     df.rename(columns={'end_at': 'ts', 'devices_reporting': 'device_count', 'powr': 'power'}, inplace=True)
-    for ix, record in df.iterrows():
+    # leave out last three records
+    for ix, record in df[:-3].iterrows():
         ts = int(record['ts'])
         device_count = int(record['device_count'])
         power = int(record['power'])
